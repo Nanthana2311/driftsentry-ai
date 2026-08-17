@@ -1,7 +1,7 @@
 from functools import lru_cache
 from typing import Literal
 
-from pydantic import Field
+from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -23,6 +23,7 @@ class Settings(BaseSettings):
     database_url: str = "postgresql+asyncpg://driftsentry:driftsentry@localhost:5432/driftsentry"
     redis_url: str = "redis://localhost:6379/0"
     cors_origins: list[str] = Field(default_factory=lambda: ["http://localhost:5173"])
+    ingestion_key_pepper: SecretStr = SecretStr("development-only-change-me")
 
 
 @lru_cache
