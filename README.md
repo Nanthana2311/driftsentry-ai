@@ -4,7 +4,7 @@
 
 DriftSentry collects prediction telemetry from deployed classification models, compares production windows with a reference profile, detects data and performance drift, and creates incidents supported by reproducible statistical evidence.
 
-> Project status: **Day 1 — foundation**. The product specification and architecture are defined; telemetry and monitoring features will be implemented incrementally.
+> Project status: **Day 2 — model registry**. PostgreSQL migrations, secure model registration, feature schemas, and API tests are implemented.
 
 ## Why this project exists
 
