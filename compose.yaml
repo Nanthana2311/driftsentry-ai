@@ -2,6 +2,7 @@ services:
   postgres:
     image: postgres:16-alpine
     environment:
+      PYTHONPATH: /app/src
       POSTGRES_DB: driftsentry
       POSTGRES_USER: driftsentry
       POSTGRES_PASSWORD: driftsentry
@@ -34,6 +35,7 @@ services:
       args:
         INSTALL_DEV: "true"
     environment:
+      PYTHONPATH: /app/src
       ENVIRONMENT: ${ENVIRONMENT:-development}
       LOG_LEVEL: ${LOG_LEVEL:-INFO}
       DATABASE_URL: ${DATABASE_URL:-postgresql+asyncpg://driftsentry:driftsentry@postgres:5432/driftsentry}
@@ -44,6 +46,8 @@ services:
     volumes:
       - ./backend/src:/app/src
       - ./backend/tests:/app/tests
+      - ./backend/migrations:/app/migrations
+      - ./backend/alembic.ini:/app/alembic.ini
     depends_on:
       postgres:
         condition: service_healthy
