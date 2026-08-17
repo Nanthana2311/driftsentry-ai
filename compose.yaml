@@ -2,7 +2,6 @@ services:
   postgres:
     image: postgres:16-alpine
     environment:
-      PYTHONPATH: /app/src
       POSTGRES_DB: driftsentry
       POSTGRES_USER: driftsentry
       POSTGRES_PASSWORD: driftsentry
