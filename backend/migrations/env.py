@@ -8,7 +8,11 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from driftsentry_api.core.config import get_settings
 from driftsentry_api.db.base import Base
-from driftsentry_api.db.models import FeatureDefinition, RegisteredModel  # noqa: F401
+from driftsentry_api.db.models import (  # noqa: F401
+    FeatureDefinition,
+    PredictionEvent,
+    RegisteredModel,
+)
 
 config = context.config
 settings = get_settings()

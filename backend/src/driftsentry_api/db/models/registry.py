@@ -1,16 +1,17 @@
 from datetime import datetime
-from typing import Any
+from typing import TYPE_CHECKING, Any
 from uuid import UUID, uuid4
 
-from sqlalchemy import JSON, Boolean, DateTime, Enum, ForeignKey, Integer, String, UniqueConstraint
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy import Boolean, DateTime, Enum, ForeignKey, Integer, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
 
 from driftsentry_api.db.base import Base
+from driftsentry_api.db.types import JSON_DOCUMENT
 from driftsentry_api.domain.enums import FeatureDataType, ModelStatus, ModelTaskType
 
-JSON_DOCUMENT = JSON().with_variant(JSONB(), "postgresql")
+if TYPE_CHECKING:
+    from driftsentry_api.db.models.events import PredictionEvent
 
 
 class RegisteredModel(Base):
@@ -29,7 +30,7 @@ class RegisteredModel(Base):
         default=ModelStatus.ACTIVE,
         nullable=False,
     )
-    ingestion_key_prefix: Mapped[str] = mapped_column(String(20), nullable=False)
+    ingestion_key_prefix: Mapped[str] = mapped_column(String(20), nullable=False, index=True)
     ingestion_key_hash: Mapped[str] = mapped_column(String(64), nullable=False)
     monitoring_config: Mapped[dict[str, Any]] = mapped_column(
         JSON_DOCUMENT,
@@ -47,6 +48,11 @@ class RegisteredModel(Base):
         cascade="all, delete-orphan",
         lazy="selectin",
         order_by="FeatureDefinition.position",
+    )
+    prediction_events: Mapped[list["PredictionEvent"]] = relationship(
+        back_populates="model",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
     )
 
 
